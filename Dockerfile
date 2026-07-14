@@ -17,10 +17,6 @@ FROM python:3.11-slim AS backend
 
 WORKDIR /app
 
-# Build arguments for Django collectstatic
-ARG SECRET_KEY=build-time-secret-key-not-for-production
-ARG DATABASE_URL=
-
 # Install system dependencies for psycopg2 and pandas
 RUN apt-get update && apt-get install -y \
     gcc \
@@ -37,13 +33,11 @@ COPY backend/ ./backend/
 # Copy built frontend into backend staticfiles
 COPY --from=frontend-builder /app/frontend/dist ./backend/staticfiles/
 
-# Collect static files
-ENV PYTHONUNBUFFERED=1
-ENV DJANGO_SETTINGS_MODULE=config.settings
-RUN cd backend && python manage.py collectstatic --noinput
-
 # Expose port
 EXPOSE 8000
+
+# Note: collectstatic runs at container startup in entrypoint.sh
+# where SECRET_KEY and DATABASE_URL env variables are available
 
 # Start command
 CMD ["./backend/entrypoint.sh"]
