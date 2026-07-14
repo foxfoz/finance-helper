@@ -36,6 +36,9 @@ COPY --from=frontend-builder /app/frontend/dist ./backend/staticfiles/
 # Expose port
 EXPOSE 8000
 
+# Force cache invalidation on rebuild
+ENV BUILD_TIMESTAMP=2026-07-14-2355
+
 # Note: collectstatic runs at container startup in entrypoint.sh
 # where SECRET_KEY and DATABASE_URL env variables are available
 
