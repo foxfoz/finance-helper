@@ -45,5 +45,5 @@ RUN cd backend && python manage.py collectstatic --noinput
 # Expose port
 EXPOSE 8000
 
-# Start command (Railway provides $PORT)
-CMD cd backend && python manage.py migrate && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 60
+# Start command
+CMD ["./backend/entrypoint.sh"]
