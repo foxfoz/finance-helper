@@ -29,6 +29,7 @@ RUN pip install --no-cache-dir -r backend/requirements.txt
 
 # Copy backend source
 COPY backend/ ./backend/
+RUN chmod +x backend/entrypoint.sh
 
 # Copy built frontend into backend staticfiles
 COPY --from=frontend-builder /app/frontend/dist ./backend/staticfiles/
@@ -43,4 +44,4 @@ ENV BUILD_TIMESTAMP=2026-07-14-2355
 # where SECRET_KEY and DATABASE_URL env variables are available
 
 # Start command
-CMD ["./backend/entrypoint.sh"]
+CMD ["sh", "./backend/entrypoint.sh"]
